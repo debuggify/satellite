@@ -1,10 +1,6 @@
 # This stores the addresses that we want to proxy requests to 
 @addresses = []
 
-# This stores a list of hashes that match sticky session ids 
-# to the servers that handled them
-@stickySessions = []
-
 # The address to handle the proxy request
 @targetAddress = null
 
