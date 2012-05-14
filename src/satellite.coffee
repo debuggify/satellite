@@ -8,6 +8,15 @@
 # handle the request
 @targetAddressIndex = 0
 
+# Used by the stick-session strategy to record which address
+# handled which session
+@stickySessions = {}
+
+# Sets a random address in the list as the target address
+setRandomTargetAddress = =>
+  randomIndex    = Math.floor Math.random() * @addresses.length
+  @targetAddress = @addresses[randomIndex]
+
 # Add an address to the list
 exports.addAddress = (address) ->
   index = @addresses.indexOf address
@@ -25,4 +34,16 @@ exports.roundRobinStrategy = (req, res, next) =>
     @targetAddressIndex = 0
   else 
     @targetAddressIndex += 1
+  next()
+
+# the connect middleware to distribute requests with sticky session ids
+# to specific addresses
+exports.stickySessionStrategy = (req, res, next) =>
+  if req.headers.cookie?
+    if @stickySessions[req.headers.cookie]?
+      @targetAddress = @stickySessions[req.headers.cookie]      
+    else
+      @stickySessions[req.headers.cookie] = setRandomTargetAddress()
+  else
+    setRandomTargetAddress()
   next()
