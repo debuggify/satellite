@@ -28,6 +28,14 @@ describe 'Satellite', ->
         satellite.removeAddress @address
         assert.deepEqual satellite.addresses, [address2]
 
+      it 'should remove any sticky sessions that are bound to that address', ->
+        address4 = host: '192.168.0.4', port: 3000
+        cookie = "connect-sid=29ud3hd92h9d992j"
+        satellite.addAddress address4        
+        satellite.stickySessions[cookie] = address4
+        satellite.removeAddress address4
+        assert !satellite.stickySessions[cookie]?
+
   describe 'round-robin strategy', ->
 
     before (done) ->
@@ -89,4 +97,3 @@ describe 'Satellite', ->
             assert satellite.targetAddress?
             assert.deepEqual satellite.targetAddress, stickySessionAddress
             done() if number is 10
-

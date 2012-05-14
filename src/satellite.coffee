@@ -23,9 +23,11 @@ exports.addAddress = (address) ->
   @addresses.push address if index is -1
 
 # Remove an address from the list
-exports.removeAddress = (address) ->
+exports.removeAddress = (address) =>
   index = @addresses.indexOf address
   @addresses.splice index, 1
+  for cookie, addr of @stickySessions
+    delete @stickySessions[cookie] if addr is address
 
 # the connect middleware to distribute requests in a round-robin fashion
 exports.roundRobinStrategy = (req, res, next) =>
