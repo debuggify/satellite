@@ -30,12 +30,10 @@ Satellite provides a round-robin strategy that you can apply to your existing pr
 ```javascript
     // This example demonstrates proxying requests between
     // 2 servers
-
     var httpProxy   = require('http-proxy');
     var satellite   = require('satellite');
 
     // Add 2 different servers to the proxy list
-
     satellite.addAddress({host: '111.11.111.111', port: 80});
     satellite.addAddress({host: '222.22.222.222', port: 80});
 
@@ -43,7 +41,6 @@ Satellite provides a round-robin strategy that you can apply to your existing pr
 
       // tell the proxy serve to use a connect-compatible 
       // middleware that provides round-robin support.
-
       satellite.roundRobinStrategy,
 
       function (req,res, proxy){
@@ -51,9 +48,7 @@ Satellite provides a round-robin strategy that you can apply to your existing pr
         // tell proxyRequest to use the target address
         // determined by satellite, which will be one
         // of the 2 servers.
-
         proxy.proxyRequest(req, res, satellite.targetAddress);
-
       }
     ).listen(80);
 ```
@@ -73,19 +68,16 @@ To enable sticky session support in your proxy server, you can do this:
 ```javascript
     // This example demonstrates using sticky session
     // support
-
     var httpProxy   = require('http-proxy');
     var satellite   = require('satellite');
 
     // Add 2 different servers to the proxy list
-
     satellite.addAddress({host: '111.11.111.111', port: 80});
     satellite.addAddress({host: '222.22.222.222', port: 80});
 
     var proxyServer = httpProxy.createServer(
 
       // tell the proxy server to use sticky-session support. 
-
       satellite.stickySessionStrategy,
 
       function (req,res, proxy){
