@@ -1,7 +1,7 @@
 {
   "author": "Paul Jensen <paulbjensen@gmail.com>",
   "name": "satellite",
-  "description": "An extension to the node-http-proxy npm library",
+  "description": "Extensions for node-http-proxy",
   "version": "0.0.0",
   "repository": {
     "type": "git",
