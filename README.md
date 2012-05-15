@@ -26,6 +26,8 @@ and you want to setup a proxy server to load-balance requests across those serve
 
 Satellite provides a round-robin strategy that you can apply to your existing proxy server code:
 
+
+    `javascript`
     // This example demonstrates proxying requests between
     // 2 servers
 
@@ -67,6 +69,7 @@ see the explanation provided in the Readme on [SockJS' github repository](https:
 
 To enable sticky session support in your proxy server, you can do this:
 
+    `javascript`
     // This example demonstrates using sticky session
     // support
 
