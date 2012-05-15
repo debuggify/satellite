@@ -84,7 +84,7 @@ To enable sticky session support in your proxy server, you can do this:
 
     var proxyServer = httpProxy.createServer(
 
-      // tell the proxy serve to use sticky-session support. 
+      // tell the proxy server to use sticky-session support. 
 
       satellite.stickySessionStrategy,
 
@@ -96,8 +96,13 @@ To enable sticky session support in your proxy server, you can do this:
 
 **NOTE:** If you wish to use both round-robin and sticky-session support 
 in your application, make sure that you call the sticky-session middleware
-after you have called the round-robin middleware.
+after you have called the round-robin middleware, like this:
 
+```javascript
+    var proxyServer = httpProxy.createServer(
+      satellite.roundRobinStrategy,
+      satellite.stickySessionStrategy,
+```
 
 Dependencies
 ---
