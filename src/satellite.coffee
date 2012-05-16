@@ -3,7 +3,7 @@
 
 # Load the various strategies
 roundRobin        = require './satellite/strategies/roundRobin'
-stickySession     = require './satellite/strategies/stickySessions'
+stickySession     = require './satellite/strategies/stickySession'
 
 # Add an address to the list
 exports.addAddress = (address) =>
