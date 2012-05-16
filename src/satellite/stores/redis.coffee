@@ -46,16 +46,19 @@ exports.targetAddress = (setValueOrCallback, cb) =>
 exports.targetAddressIndex =
   
   # get the target address index
-  get: =>
-    #memory.roundRobin.targetAddressIndex
+  get: (cb) =>
+    Redis.get "satellite_targetAddressIndex", (err, data) ->
+      cb err, data
   
   # increase the target address index by 1
-  increment: =>
-    #memory.roundRobin.targetAddressIndex += 1
+  increment: (cb) =>
+    Redis.incr "satellite_targetAddressIndex", (err, data) ->
+      cb err, data
 
   # set the target address index to 0
-  reset: =>
-    #memory.roundRobin.targetAddressIndex = 0
+  reset: (cb) =>
+    Redis.set "satellite_targetAddressIndex", 0, (err, data) ->
+      cb err, data
   
 # the sticky sessions API    
 exports.stickySessions =

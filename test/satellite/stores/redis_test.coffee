@@ -75,30 +75,34 @@ describe 'redis store', ->
             assert.deepEqual data, eta
             done()
 
-  # describe 'targetAddressIndex', ->
+  describe 'targetAddressIndex', ->
 
-  #   describe 'get', ->
+    describe 'get', ->
 
-  #     it 'should return the current index of the targetAddress array', (done) ->
-  #       satellite.store.targetAddressIndex.reset()
-  #       satellite.store.targetAddressIndex.increment() for number in [0..4]
-  #       assert.equal satellite.store.targetAddressIndex.get(), 5
-  #       done()
+      it 'should return the current index of the targetAddress array', (done) ->
+        satellite.store.targetAddressIndex.reset (err, data) ->
+          satellite.store.targetAddressIndex.increment (err, data) ->
+            satellite.store.targetAddressIndex.increment (err, data) ->
+              satellite.store.targetAddressIndex.get (err, data) ->
+                assert.equal data, 2
+                done()
 
-  #   describe 'increment', ->
+    describe 'increment', ->
 
-  #     it 'should increase the value of the current index by 1', (done) ->
-  #       satellite.store.targetAddressIndex.reset()
-  #       satellite.store.targetAddressIndex.increment()
-  #       assert.equal satellite.store.targetAddressIndex.get(), 1
-  #       done()
+      it 'should increase the value of the current index by 1', (done) ->
+        satellite.store.targetAddressIndex.reset (err, data) ->
+          satellite.store.targetAddressIndex.increment (err, data) ->
+            satellite.store.targetAddressIndex.get (err, data) ->
+              assert.equal data, 1
+              done()
 
-  #   describe 'reset', ->
+    describe 'reset', ->
 
-  #     it 'should set the value of the current index to 0', (done) ->
-  #       satellite.store.targetAddressIndex.reset()
-  #       assert.equal satellite.store.targetAddressIndex.get(), 0
-  #       done()
+      it 'should set the value of the current index to 0', (done) ->
+        satellite.store.targetAddressIndex.reset (err, data) ->
+          satellite.store.targetAddressIndex.get (err, data) ->
+            assert.equal data, 0
+            done()
 
   #   describe 'stickySessions', ->
 
