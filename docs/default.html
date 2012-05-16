@@ -1,0 +1,39 @@
+<!DOCTYPE html>  <html> <head>   <title>default.coffee</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               default.coffee             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>                            </td>             <td class="code">               <div class="highlight"><pre><span class="nv">memory = </span>
+  <span class="nv">addresses: </span><span class="p">[]</span>
+  <span class="nv">targetAddress: </span><span class="kc">null</span>
+  <span class="nv">roundRobin:</span>
+    <span class="nv">targetAddressIndex: </span><span class="mi">0</span>
+  <span class="nv">stickySessions:</span>
+    <span class="nv">sessions: </span><span class="p">{}</span>
+
+<span class="nv">exports.addresses =</span>
+  <span class="nv">add: </span><span class="p">(</span><span class="nx">address</span><span class="p">)</span> <span class="o">=&gt;</span>
+    <span class="nx">memory</span><span class="p">.</span><span class="nx">addresses</span><span class="p">.</span><span class="nx">push</span> <span class="nx">address</span>
+  <span class="nv">remove: </span><span class="p">(</span><span class="nx">address</span><span class="p">)</span> <span class="o">=&gt;</span>
+    <span class="nv">index = </span><span class="nx">memory</span><span class="p">.</span><span class="nx">addresses</span><span class="p">.</span><span class="nx">indexOf</span> <span class="nx">address</span>
+    <span class="nx">memory</span><span class="p">.</span><span class="nx">addresses</span><span class="p">.</span><span class="nx">splice</span> <span class="nx">index</span><span class="p">,</span> <span class="mi">1</span>
+  <span class="nv">get: </span><span class="o">=&gt;</span>
+    <span class="nx">memory</span><span class="p">.</span><span class="nx">addresses</span>
+
+<span class="nv">exports.targetAddress = </span><span class="p">(</span><span class="nx">setValue</span><span class="o">=</span><span class="kc">undefined</span><span class="p">)</span> <span class="o">=&gt;</span>
+  <span class="nv">memory.targetAddress = </span><span class="nx">setValue</span> <span class="k">if</span> <span class="nx">setValue</span><span class="o">?</span>
+  <span class="nx">memory</span><span class="p">.</span><span class="nx">targetAddress</span>
+
+<span class="nv">exports.targetAddressIndex =</span>
+  <span class="nv">get: </span><span class="o">=&gt;</span>
+    <span class="nx">memory</span><span class="p">.</span><span class="nx">roundRobin</span><span class="p">.</span><span class="nx">targetAddressIndex</span>
+  <span class="nv">increment: </span><span class="o">=&gt;</span>
+    <span class="nx">memory</span><span class="p">.</span><span class="nx">roundRobin</span><span class="p">.</span><span class="nx">targetAddressIndex</span> <span class="o">+=</span> <span class="mi">1</span>
+  <span class="nv">reset: </span><span class="o">=&gt;</span>
+    <span class="nv">memory.roundRobin.targetAddressIndex = </span><span class="mi">0</span>
+      
+<span class="nv">exports.stickySessions =</span>
+  <span class="nv">get: </span><span class="p">(</span><span class="nx">key</span><span class="o">=</span><span class="kc">null</span><span class="p">)</span> <span class="o">=&gt;</span>
+    <span class="nv">items = </span><span class="nx">memory</span><span class="p">.</span><span class="nx">stickySessions</span><span class="p">.</span><span class="nx">sessions</span>
+    <span class="k">if</span> <span class="nx">key</span><span class="o">?</span> <span class="k">then</span> <span class="nx">items</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="k">else</span> <span class="nx">items</span>
+  <span class="nv">set: </span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span> <span class="o">=&gt;</span>
+    <span class="nx">memory</span><span class="p">.</span><span class="nx">stickySessions</span><span class="p">.</span><span class="nx">sessions</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="nx">value</span>
+  <span class="k">delete</span><span class="o">:</span> <span class="p">(</span><span class="nx">key</span><span class="p">)</span> <span class="o">=&gt;</span>
+    <span class="k">delete</span> <span class="nx">memory</span><span class="p">.</span><span class="nx">stickySessions</span><span class="p">.</span><span class="nx">sessions</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 
