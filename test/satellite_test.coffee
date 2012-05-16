@@ -87,11 +87,11 @@ describe 'Satellite', ->
       it 'should record which address served the request', (done) ->
         @app.stack[0].handle @req, @res, =>
           assert satellite.targetAddress?
-          assert.deepEqual satellite.stickySessions[@cookie], satellite.targetAddress
+          assert.deepEqual satellite.stickySessions.sessions[@cookie], satellite.targetAddress
           done()
         
       it 'should route future requests for that session to the recorded address', (done) ->
-        stickySessionAddress = satellite.stickySessions[@cookie]
+        stickySessionAddress = satellite.stickySessions.sessions[@cookie]
         for number in [0..10]
           @app.stack[0].handle @req, @res, =>
             assert satellite.targetAddress?
