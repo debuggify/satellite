@@ -1,22 +1,18 @@
-satellite = require '../../satellite.coffee'
+satellite = require '../../satellite'
 
-# Used by the stick-session strategy to record which address
-# handled which session
-@sessions = {}
-
-# Sets a random address in the list as the target address
+  # Sets a random address in the list as the target address
 setRandomTargetAddress = =>
-  randomIndex    = Math.floor Math.random() * satellite.addresses.length # GETTER
-  satellite.targetAddress = satellite.addresses[randomIndex] # GETTER & SETTER
+  randomIndex    = Math.floor Math.random() * satellite.store.addresses.get().length
+  satellite.store.targetAddress satellite.store.addresses.get()[randomIndex]
 
-# the connect middleware to distribute requests with sticky session ids
-# to specific addresses
-@strategy = (req, res, next) =>
+  # the connect middleware to distribute requests with sticky session ids
+  # to specific addresses
+exports.strategy = (req, res, next) =>
   if req.headers.cookie?
-    if @sessions[req.headers.cookie]? # GETTER
-      satellite.targetAddress = @sessions[req.headers.cookie] #SETTER     
+    if satellite.store.stickySessions.get(req.headers.cookie)?
+      satellite.store.targetAddress satellite.store.stickySessions.get req.headers.cookie
     else
-      @sessions[req.headers.cookie] = setRandomTargetAddress() # SETTER
+      satellite.store.stickySessions.set req.headers.cookie, setRandomTargetAddress()
   else
-    setRandomTargetAddress() # GETTER & SETTER
+    setRandomTargetAddress()
   next()

@@ -1,14 +1,14 @@
-satellite = require '../../satellite.coffee'
+satellite = require '../../satellite'
 
 # Used by the round-robin strategy to pick which address should 
 # handle the request
-@targetAddressIndex = 0
+#@targetAddressIndex = 0
 
 # the connect middleware to distribute requests in a round-robin fashion
-@strategy = (req, res, next) =>
-  satellite.targetAddress = satellite.addresses[@targetAddressIndex] # GETTER & SETTER
-  if @targetAddressIndex is satellite.addresses.length-1 # GETTER
-    @targetAddressIndex = 0 # SETTER
-  else 
-    @targetAddressIndex += 1 # SETTER
+exports.strategy = (req, res, next) ->
+  satellite.store.targetAddress satellite.store.addresses.get()[satellite.store.targetAddressIndex.get()]
+  if satellite.store.targetAddressIndex.get() is satellite.store.addresses.get().length-1
+    satellite.store.targetAddressIndex.reset()
+  else
+    satellite.store.targetAddressIndex.increment()
   next()
