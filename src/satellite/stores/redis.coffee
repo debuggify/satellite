@@ -34,9 +34,13 @@ exports.addresses =
       cb err, data
 
 # get or set the target Address
-exports.targetAddress = (setValue=undefined) =>
-  #memory.targetAddress = setValue if setValue?
-  #memory.targetAddress
+exports.targetAddress = (setValueOrCallback, cb) =>
+  if typeof setValueOrCallback is "object"
+    Redis.set "satellite_targetAddress", JSON.stringify(setValueOrCallback), (err, data) -> 
+      cb err, data
+  else
+    Redis.get "satellite_targetAddress", (err, data) ->
+      setValueOrCallback err, JSON.parse data
 
 # the round robin target address index API
 exports.targetAddressIndex =

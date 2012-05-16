@@ -55,22 +55,25 @@ describe 'redis store', ->
             done()
 
 
-  # describe 'targetAddress', ->
+  describe 'targetAddress', ->
 
-  #   describe '()', ->
+    describe '(cb)', ->
 
-  #     it 'should return the current value of targetAddress', (done) ->
-  #       expectedTargetAddress = host: '222.22.222.222', port: 80
-  #       satellite.store.targetAddress expectedTargetAddress
-  #       assert.deepEqual satellite.store.targetAddress(), expectedTargetAddress
-  #       done()
+      it 'should return the current value of targetAddress', (done) ->
+        expectedTargetAddress = host: '222.22.222.222', port: 80
+        satellite.store.targetAddress expectedTargetAddress, (err, data) ->
+          satellite.store.targetAddress (err, data) ->
+            assert.deepEqual data, expectedTargetAddress
+            done()
 
-  #   describe '(set)', ->
+    describe '(data, cb)', ->
 
-  #     it 'should set the current value of targetAddress, and return itself', (done) ->
-  #       eta = host: '333.33.333.333', port: 80
-  #       assert.deepEqual satellite.store.targetAddress(eta), eta
-  #       done()
+      it 'should set the current value of targetAddress, and return itself', (done) ->
+        eta = host: '333.33.333.333', port: 80
+        satellite.store.targetAddress eta, (err, data) ->
+          satellite.store.targetAddress (err, data) ->
+            assert.deepEqual data, eta
+            done()
 
   # describe 'targetAddressIndex', ->
 
@@ -139,3 +142,8 @@ describe 'redis store', ->
   #         assert.deepEqual satellite.store.stickySessions.get(), {}
   #         assert.deepEqual satellite.store.stickySessions.get(key), undefined
   #         done()
+
+after (done) ->
+  done()
+  # put this line in to kill the process once done
+  process.exit 0
