@@ -15,10 +15,10 @@ build = (watch, callback) ->
   coffee.on 'exit', (status) -> callback?() if status is 0
 
 files = [
-  'satellite.coffee',
-  'satellite/strategies/roundRobin.coffee',  
-  'satellite/strategies/stickySession.coffee',
-  'satellite/stores/default.coffee',
+  # 'satellite.coffee',
+  # 'satellite/strategies/roundRobin.coffee',  
+  # 'satellite/strategies/stickySession.coffee',
+  # 'satellite/stores/default.coffee',
   'satellite/stores/redis.coffee'
 ]
 

@@ -10,49 +10,49 @@ emtpyHash = (hash) ->
 
 describe 'redis store', ->
 
-  # before (done) ->
-  #   satellite.setStore 'redis', ->
-  #     done()
-  #     # This is to clear out the list of addresses that
-  #     # may have been populated by other test files
-  #     # if satellite.store.addresses.get().length is 0
-  #     #   done()
-  #     # else
-  #     #   for address in satellite.store.addresses.get()
-  #     #     satellite.store.addresses.remove(address)
-  #     #     done() if satellite.store.addresses.get().length is 0 
- 
-  # after (done) ->
-  #   satellite.setStore 'default', ->
-  #     done()
-
+  before (done) ->
+    # This is to clear out the list of addresses that
+    # may have been populated by other test files
+    satellite.setStore 'redis', ->
+      satellite.store.addresses.get (err, list) ->
+        if list.length is 0
+          done()
+        else
+          satellite.store.addresses.get (err, list) ->
+            for address in list
+              satellite.store.addresses.remove address, (err, data) ->
+                satellite.store.addresses.get (err, list) ->
+                  if list.length is 0
+                    done()
    
-  # describe 'addresses', ->
+  describe 'addresses', ->
 
-  #   describe 'add', ->
+    describe 'add', ->
       
-  #     it 'should append the address to the list', (done) ->
-  #       address = host: '111.11.111.111', port: 80
-  #       assert.equal satellite.store.namespace, 'redis'
-  #       satellite.store.addresses.add address
-  #       assert satellite.store.addresses.get(), [address]
-  #       done()
+      it 'should append the address to the list', (done) ->
+        address = host: '111.11.111.111', port: 80
+        satellite.store.addresses.add address, (err, data) ->
+          satellite.store.addresses.get (err, list) ->
+            assert list, [address]
+            done()
 
-  #   describe 'remove', ->
+    describe 'remove', ->
     
-  #     it 'should remove the address from the list', (done) ->
-  #       address = host: '111.11.111.111', port: 80
-  #       satellite.store.addresses.remove address
-  #       assert satellite.store.addresses.get(), [address]
-  #       done()
+      it 'should remove the address from the list', (done) ->
+        address = host: '111.11.111.111', port: 80
+        satellite.store.addresses.remove address, (err,data) ->
+          satellite.store.addresses.get (err, list) ->
+            assert list, [address]
+            done()
 
-  #   describe 'get', ->
+    describe 'get', ->
 
-  #     it 'should return the list of addresses', (done) ->
-  #       address2 = host: '222.22.222.222', port: 80
-  #       satellite.store.addresses.add address2
-  #       assert satellite.store.addresses.get(), [address2]
-  #       done()
+      it 'should return the list of addresses', (done) ->
+        address2 = host: '222.22.222.222', port: 80
+        satellite.store.addresses.add address2, (err, data) ->
+          satellite.store.addresses.get  (err, list) ->
+            assert list, [address2]
+            done()
 
 
   # describe 'targetAddress', ->

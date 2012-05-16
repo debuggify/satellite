@@ -14,16 +14,24 @@ Redis = redis.createClient()
 exports.addresses =
 
   # add an address to the list
-  add: (address) =>
-    Redis.sadd "satellite_addresses", address
+  add: (address, cb) =>
+    encodedAddress = JSON.stringify address
+    Redis.sadd "satellite_addresses", encodedAddress, (err, data) ->
+      cb err, data
   
   # add an address from the list
-  remove: (address) =>
-    Redis.srem "satellite_addresses", address
+  remove: (address, cb) =>
+    encodedAddress = if typeof address is "object"
+      JSON.stringify address
+    else
+      address
+    Redis.srem "satellite_addresses", encodedAddress, (err, data) ->
+      cb err, data
 
   # get the list  
-  get: =>
-    Redis.smembers "satellite_addresses", Redis.print
+  get: (cb) =>
+    Redis.smembers "satellite_addresses", (err,data) ->
+      cb err, data
 
 # get or set the target Address
 exports.targetAddress = (setValue=undefined) =>
