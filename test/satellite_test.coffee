@@ -35,3 +35,13 @@ describe 'Satellite', ->
         satellite.store.stickySessions.set cookie, address4
         satellite.removeAddress address4
         assert !satellite.store.stickySessions.get(cookie)?
+
+  describe 'setStore', ->
+
+    it 'should change the store type used', (done) ->
+      store = satellite.store
+      satellite.setStore 'redis', ->
+        assert.notDeepEqual satellite.store, store
+        satellite.setStore 'default', ->
+          done()
+

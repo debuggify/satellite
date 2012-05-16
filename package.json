@@ -8,7 +8,8 @@
     "url": "http://github.com/paulbjensen/satellite.git"
   },
   "dependencies": {
-    "http-proxy":"= 0.8.0"
+    "http-proxy":"= 0.8.0",
+    "redis":"= 0.7.2"
   },
   "devDependencies": {
     "coffee-script":"latest",
