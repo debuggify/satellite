@@ -17,7 +17,7 @@ build = (watch, callback) ->
 files = [
   'satellite.coffee',
   'satellite/strategies/roundRobin.coffee',  
-  'satellite/strategies/stickySessions.coffee'
+  'satellite/strategies/stickySession.coffee'
 ]
 
 buildDocs = (callback) ->
