@@ -1,15 +1,6 @@
 redis = require 'redis'
 Redis = redis.createClient()
 
-
-# memory = 
-#   addresses: []
-#   targetAddress: null
-#   roundRobin:
-#     targetAddressIndex: 0
-#   stickySessions:
-#     sessions: {}
-
 # The addresses store API functions
 exports.addresses =
 
@@ -64,14 +55,21 @@ exports.targetAddressIndex =
 exports.stickySessions =
   
   # get all the sticky sessions, or just one
-  get: (key=null) =>
-    #items = memory.stickySessions.sessions
-    #if key? then items[key] else items
-  
+  get: (keyOrCallback, cb) =>
+    # figure out Redis getter/setter
+    if typeof keyOrCallback is 'string'
+      Redis.hget "satellite_stickySessions", keyOrCallback, (err, data) ->
+        cb err, data
+    else
+      Redis.hgetall "satellite_stickySessions", (err, data) ->
+        keyOrCallback err, data
+
   # set a sticky session by its key and value
-  set: (key, value) =>
-    #memory.stickySessions.sessions[key] = value
+  set: (key, value, cb) =>
+    Redis.hset "satellite_stickySessions", key, value, (err, data) ->
+      cb err, data
   
   # remove a sticky session
-  delete: (key) =>
-    #delete memory.stickySessions.sessions[key]
+  delete: (key, cb) =>
+    Redis.hdel "satellite_stickySessions", key, (err, data) ->
+      cb err, data

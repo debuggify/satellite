@@ -104,23 +104,40 @@ describe 'redis store', ->
             assert.equal data, 0
             done()
 
-  #   describe 'stickySessions', ->
+    describe 'stickySessions', ->
 
-  #     before (done) ->
-  #       # This is to clear out the hash of stickySessions that
-  #       # may have been populated by other test files
-  #       for key,value of satellite.store.stickySessions.get()
-  #         satellite.store.stickySessions.delete key        
-  #         done() if emtpyHash satellite.store.stickySessions.get() 
+      before (done) ->
+        # This is to clear out the hash of stickySessions that
+        # may have been populated by other test files
+        satellite.store.stickySessions.get (err, data) ->
+          if data?
+            for own key,value of data
+              satellite.store.stickySessions.delete key, (err, data) ->         
+                satellite.store.stickySessions.get (err, data) ->
+                  done() if emtpyHash data
+          else
+            done()
 
-  #     describe 'get()', ->
+      describe 'get()', ->
 
-  #       it 'should return a hash of keys and values', (done) ->
-  #         kv = {"cookie-xxx": {host: '555.55.555.555', port: 80}}
-  #         for key,value of kv
-  #           satellite.store.stickySessions.set key, value
-  #           assert.deepEqual satellite.store.stickySessions.get(), kv
-  #           done()
+        it 'should return a hash of keys and values', (done) ->
+          kv = {"cookie-xxx": {host: "555.55.555.555", port: 80}}
+          for key,value of kv
+            satellite.store.stickySessions.set key, value, (err, data) ->
+              satellite.store.stickySessions.get (err, data) ->
+                console.log typeof data["cookie-xxx"] is 'string'
+                assert.deepEqual data, kv
+                done()
+
+  # NOTE - 
+
+  # to support the storing of nested objects, you'll need to use
+  # Redis's set to store the session id as a value in the satellite_addresses_key
+  # and then a hash with that session id as the key, and it's port and address
+  # as the values
+  # 
+  # also, you will need to change the store api to use callbacks.
+  #
 
   #     describe 'get(key)', ->
 
