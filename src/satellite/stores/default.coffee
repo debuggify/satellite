@@ -10,20 +10,20 @@ memory =
 exports.addresses =
 
   # add an address to the list
-  add: (address) =>
+  addSync: (address) =>
     memory.addresses.push address
   
   # add an address from the list
-  remove: (address) =>
+  removeSync: (address) =>
     index = memory.addresses.indexOf address
     memory.addresses.splice index, 1
 
   # get the list  
-  get: =>
+  getSync: =>
     memory.addresses
 
 # get or set the target Address
-exports.targetAddress = (setValue=undefined) =>
+exports.targetAddressSync = (setValue=undefined) =>
   memory.targetAddress = setValue if setValue?
   memory.targetAddress
 
@@ -31,29 +31,29 @@ exports.targetAddress = (setValue=undefined) =>
 exports.targetAddressIndex =
   
   # get the target address index
-  get: =>
+  getSync: =>
     memory.roundRobin.targetAddressIndex
   
   # increase the target address index by 1
-  increment: =>
+  incrementSync: =>
     memory.roundRobin.targetAddressIndex += 1
 
   # set the target address index to 0
-  reset: =>
+  resetSync: =>
     memory.roundRobin.targetAddressIndex = 0
   
 # the sticky sessions API    
 exports.stickySessions =
   
   # get all the sticky sessions, or just one
-  get: (key=null) =>
+  getSync: (key=null) =>
     items = memory.stickySessions.sessions
     if key? then items[key] else items
   
   # set a sticky session by its key and value
-  set: (key, value) =>
+  setSync: (key, value) =>
     memory.stickySessions.sessions[key] = value
   
   # remove a sticky session
-  delete: (key) =>
+  deleteSync: (key) =>
     delete memory.stickySessions.sessions[key]

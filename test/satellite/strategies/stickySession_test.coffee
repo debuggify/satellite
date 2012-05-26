@@ -18,7 +18,7 @@ describe 'sticky-session strategy', ->
 
     it 'should route the request to a random target address', (done) ->
       @app.stack[0].handle @req, @res, ->
-        assert satellite.store.targetAddress()?
+        assert satellite.store.targetAddressSync()?
       done()
 
   describe 'when session id is present', ->
@@ -30,14 +30,14 @@ describe 'sticky-session strategy', ->
 
     it 'should record which address served the request', (done) ->
       @app.stack[0].handle @req, @res, =>
-        assert satellite.store.targetAddress()?
-        assert.deepEqual satellite.store.stickySessions.get(@cookie), satellite.store.targetAddress()
+        assert satellite.store.targetAddressSync()?
+        assert.deepEqual satellite.store.stickySessions.getSync(@cookie), satellite.store.targetAddressSync()
         done()
       
     it 'should route future requests for that session to the recorded address', (done) ->
-      stickySessionAddress = satellite.store.stickySessions.get(@cookie)
+      stickySessionAddress = satellite.store.stickySessions.getSync(@cookie)
       for number in [0..10]
         @app.stack[0].handle @req, @res, =>
-          assert satellite.store.targetAddress()?
-          assert.deepEqual satellite.store.targetAddress(), stickySessionAddress
+          assert satellite.store.targetAddressSync()?
+          assert.deepEqual satellite.store.targetAddressSync(), stickySessionAddress
           done() if number is 10

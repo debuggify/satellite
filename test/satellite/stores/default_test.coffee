@@ -13,34 +13,34 @@ describe 'default store', ->
   before (done) ->
     # This is to clear out the list of addresses that
     # may have been populated by other test files
-    for address in satellite.store.addresses.get()
-      satellite.store.addresses.remove(address)
-      done() if satellite.store.addresses.get().length is 0 
+    for address in satellite.store.addresses.getSync()
+      satellite.store.addresses.removeSync(address)
+      done() if satellite.store.addresses.getSync().length is 0 
 
   describe 'addresses', ->
 
-    describe 'add', ->
+    describe 'addSync', ->
       
       it 'should append the address to the list', (done) ->
         address = host: '111.11.111.111', port: 80
-        satellite.store.addresses.add address
-        assert satellite.store.addresses.get(), [address]
+        satellite.store.addresses.addSync address
+        assert satellite.store.addresses.getSync(), [address]
         done()
 
-    describe 'remove', ->
+    describe 'removeSync', ->
     
       it 'should remove the address from the list', (done) ->
         address = host: '111.11.111.111', port: 80
-        satellite.store.addresses.remove address
-        assert satellite.store.addresses.get(), [address]
+        satellite.store.addresses.removeSync address
+        assert satellite.store.addresses.getSync(), [address]
         done()
 
-    describe 'get', ->
+    describe 'getSync', ->
 
       it 'should return the list of addresses', (done) ->
         address2 = host: '222.22.222.222', port: 80
-        satellite.store.addresses.add address2
-        assert satellite.store.addresses.get(), [address2]
+        satellite.store.addresses.addSync address2
+        assert satellite.store.addresses.getSync(), [address2]
         done()
 
   describe 'targetAddress', ->
@@ -49,15 +49,15 @@ describe 'default store', ->
 
       it 'should return the current value of targetAddress', (done) ->
         expectedTargetAddress = host: '222.22.222.222', port: 80
-        satellite.store.targetAddress expectedTargetAddress
-        assert.deepEqual satellite.store.targetAddress(), expectedTargetAddress
+        satellite.store.targetAddressSync expectedTargetAddress
+        assert.deepEqual satellite.store.targetAddressSync(), expectedTargetAddress
         done()
 
     describe '(set)', ->
 
       it 'should set the current value of targetAddress, and return itself', (done) ->
         eta = host: '333.33.333.333', port: 80
-        assert.deepEqual satellite.store.targetAddress(eta), eta
+        assert.deepEqual satellite.store.targetAddressSync(eta), eta
         done()
 
   describe 'targetAddressIndex', ->
@@ -65,24 +65,24 @@ describe 'default store', ->
     describe 'get', ->
 
       it 'should return the current index of the targetAddress array', (done) ->
-        satellite.store.targetAddressIndex.reset()
-        satellite.store.targetAddressIndex.increment() for number in [0..4]
-        assert.equal satellite.store.targetAddressIndex.get(), 5
+        satellite.store.targetAddressIndex.resetSync()
+        satellite.store.targetAddressIndex.incrementSync() for number in [0..4]
+        assert.equal satellite.store.targetAddressIndex.getSync(), 5
         done()
 
     describe 'increment', ->
 
       it 'should increase the value of the current index by 1', (done) ->
-        satellite.store.targetAddressIndex.reset()
-        satellite.store.targetAddressIndex.increment()
-        assert.equal satellite.store.targetAddressIndex.get(), 1
+        satellite.store.targetAddressIndex.resetSync()
+        satellite.store.targetAddressIndex.incrementSync()
+        assert.equal satellite.store.targetAddressIndex.getSync(), 1
         done()
 
     describe 'reset', ->
 
       it 'should set the value of the current index to 0', (done) ->
-        satellite.store.targetAddressIndex.reset()
-        assert.equal satellite.store.targetAddressIndex.get(), 0
+        satellite.store.targetAddressIndex.resetSync()
+        assert.equal satellite.store.targetAddressIndex.getSync(), 0
         done()
 
     describe 'stickySessions', ->
@@ -90,40 +90,40 @@ describe 'default store', ->
       before (done) ->
         # This is to clear out the hash of stickySessions that
         # may have been populated by other test files
-        for key,value of satellite.store.stickySessions.get()
-          satellite.store.stickySessions.delete key        
-          done() if emtpyHash satellite.store.stickySessions.get() 
+        for key,value of satellite.store.stickySessions.getSync()
+          satellite.store.stickySessions.deleteSync key        
+          done() if emtpyHash satellite.store.stickySessions.getSync() 
 
-      describe 'get()', ->
+      describe 'getSync()', ->
 
         it 'should return a hash of keys and values', (done) ->
           kv = {"cookie-xxx": {host: '555.55.555.555', port: 80}}
           for key,value of kv
-            satellite.store.stickySessions.set key, value
-            assert.deepEqual satellite.store.stickySessions.get(), kv
+            satellite.store.stickySessions.setSync key, value
+            assert.deepEqual satellite.store.stickySessions.getSync(), kv
             done()
 
-      describe 'get(key)', ->
+      describe 'getSync(key)', ->
 
         it 'should return the value corresponding to the key in the hash', (done) ->
           value = {host: '555.55.555.555', port: 80}
-          assert.deepEqual satellite.store.stickySessions.get("cookie-xxx"), value
+          assert.deepEqual satellite.store.stickySessions.getSync("cookie-xxx"), value
           done()
 
 
-      describe 'set', ->
+      describe 'setSync', ->
         
         it 'should set a key and value in the hash', (done) ->
           value = {host: '777.77.777.777', port: 80}
-          satellite.store.stickySessions.set "cookie-xxx", value
-          assert.deepEqual satellite.store.stickySessions.get("cookie-xxx"), value
+          satellite.store.stickySessions.setSync "cookie-xxx", value
+          assert.deepEqual satellite.store.stickySessions.getSync("cookie-xxx"), value
           done()
 
-      describe 'delete', ->
+      describe 'deleteSync', ->
 
         it 'should delete the key and value from the hash', (done) ->
           key = "cookie-xxx"
-          satellite.store.stickySessions.delete key
-          assert.deepEqual satellite.store.stickySessions.get(), {}
-          assert.deepEqual satellite.store.stickySessions.get(key), undefined
+          satellite.store.stickySessions.deleteSync key
+          assert.deepEqual satellite.store.stickySessions.getSync(), {}
+          assert.deepEqual satellite.store.stickySessions.getSync(key), undefined
           done()
