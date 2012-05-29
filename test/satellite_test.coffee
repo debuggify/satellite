@@ -10,7 +10,7 @@ describe 'Satellite', ->
       @address = host: '192.168.0.1', port: 3000
       done()
 
-    describe 'add an address', ->      
+    describe 'addAddressSync', ->      
 
       it 'should append an address to an existing list', ->
         satellite.addAddressSync @address
@@ -19,6 +19,22 @@ describe 'Satellite', ->
       it 'should not add the address if it is already in the list', ->
         satellite.addAddressSync @address for number in [0..1]
         assert.deepEqual satellite.store.addresses.getSync(), [@address]        
+
+    describe 'addAddress', ->
+
+      it 'should append an address to an existing list', (done) ->
+        satellite.addAddress @address, (status) =>
+          satellite.store.addresses.get (addresses) =>
+            assert.deepEqual [@address], addresses
+            done()
+
+      it 'should not add the address if it is already in the list', (done) ->
+        for number in [0..1]
+          satellite.addAddress @address, (status) =>
+            if number is 1
+              satellite.store.addresses.get (addresses) =>
+                assert.deepEqual addresses, [@address]
+                done()
 
     describe 'remove an address', ->
 

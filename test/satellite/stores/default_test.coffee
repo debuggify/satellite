@@ -27,6 +27,16 @@ describe 'default store', ->
         assert satellite.store.addresses.getSync(), [address]
         done()
 
+    describe 'add', ->
+ 
+      it 'should append the address to the list', (done) ->
+        address = host: '111.11.111.111', port: 80
+        satellite.store.addresses.add address, (status) ->
+          satellite.store.addresses.get (addresses) ->
+            assert addresses, [address]
+            done()
+
+
     describe 'removeSync', ->
     
       it 'should remove the address from the list', (done) ->
@@ -42,6 +52,16 @@ describe 'default store', ->
         satellite.store.addresses.addSync address2
         assert satellite.store.addresses.getSync(), [address2]
         done()
+
+    describe 'get', ->
+      
+      it 'should return the list of addresses', (done) ->
+        address2 = host: '222.22.222.222', port: 80
+        satellite.store.addresses.add address2, (status) ->
+          satellite.store.addresses.get (addresses) ->
+            assert addresses, [address2]
+            done()
+
 
   describe 'targetAddress', ->
 

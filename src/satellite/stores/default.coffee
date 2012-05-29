@@ -9,18 +9,27 @@ memory =
 # The addresses store API functions
 exports.addresses =
 
-  # add an address to the list
+  # add an address to the list, sync
   addSync: (address) =>
     memory.addresses.push address
   
-  # add an address from the list
+  # add an address to the list
+  add: (address, cb) =>
+    memory.addresses.push address
+    cb 'success'
+
+  # add an address from the list, sync
   removeSync: (address) =>
     index = memory.addresses.indexOf address
     memory.addresses.splice index, 1
 
-  # get the list  
+  # get the list, sync
   getSync: =>
     memory.addresses
+
+  # get the list
+  get: (cb) =>
+    cb memory.addresses
 
 # get or set the target Address
 exports.targetAddressSync = (setValue=undefined) =>
