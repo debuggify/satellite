@@ -8,20 +8,11 @@ memory =
 
 # The addresses store API functions
 exports.addresses =
-
-  # add an address to the list, sync
-  addSync: (address) =>
-    memory.addresses.push address
   
   # add an address to the list
   add: (address, cb) =>
     memory.addresses.push address
     cb 'success'
-
-  # add an address from the list, sync
-  removeSync: (address) =>
-    index = memory.addresses.indexOf address
-    memory.addresses.splice index, 1
 
   # add an address from the list
   remove: (address, cb) =>
@@ -29,18 +20,9 @@ exports.addresses =
     memory.addresses.splice index, 1
     cb 'success'
 
-  # get the list, sync
-  getSync: =>
-    memory.addresses
-
   # get the list
   get: (cb) =>
     cb memory.addresses
-
-# get or set the target Address, sync
-exports.targetAddressSync = (setValue=undefined) =>
-  memory.targetAddress = setValue if setValue?
-  memory.targetAddress
 
 # get or set the target Address
 exports.targetAddress =
@@ -55,28 +37,16 @@ exports.targetAddress =
     cb value
 
 # the round robin target address index API
-exports.targetAddressIndex =
-  
-  # get the target address index, sync
-  getSync: =>
-    memory.roundRobin.targetAddressIndex
+exports.targetAddressIndex =  
   
   # get the target address index
   get: (cb) =>
     cb memory.roundRobin.targetAddressIndex
 
-  # increase the target address index by 1, sync
-  incrementSync: =>
-    memory.roundRobin.targetAddressIndex += 1
-
   # increase the target address index by 1
   increment: (cb) =>
     memory.roundRobin.targetAddressIndex += 1
     cb 'success'
-
-  # set the target address index to 0, sync
-  resetSync: =>
-    memory.roundRobin.targetAddressIndex = 0
 
   # set the target address index to 0
   reset: (cb) =>
@@ -85,12 +55,7 @@ exports.targetAddressIndex =
   
 # the sticky sessions API    
 exports.stickySessions =
-  
-  # get all the sticky sessions, or just one, sync
-  getSync: (key=null) =>
-    items = memory.stickySessions.sessions
-    if key? then items[key] else items
-  
+    
   # get all the sticky sessions, or just one
   get: (keyOrCb, cb=null) =>
     items = memory.stickySessions.sessions
@@ -99,19 +64,11 @@ exports.stickySessions =
     else
       cb items[keyOrCb]
 
-  # set a sticky session by its key and value, sync
-  setSync: (key, value) =>
-    memory.stickySessions.sessions[key] = value
-
   # set a sticky session by its key and value
   set: (key, value, response) =>
     memory.stickySessions.sessions[key] = value
     response 'success'
   
-  # remove a sticky session, sync
-  deleteSync: (key) =>
-    delete memory.stickySessions.sessions[key]
-
   # remove a sticky session
   delete: (key, cb) =>
     delete memory.stickySessions.sessions[key]
