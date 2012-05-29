@@ -72,7 +72,7 @@ describe 'default store', ->
             done()
 
 
-  describe 'targetAddress', ->
+  describe 'targetAddressSync', ->
 
     describe '()', ->
 
@@ -88,6 +88,27 @@ describe 'default store', ->
         eta = host: '333.33.333.333', port: 80
         assert.deepEqual satellite.store.targetAddressSync(eta), eta
         done()
+
+  describe 'targetAddress', ->
+
+    describe 'get', ->
+
+      it 'should return the current value of targetAddress', (done) ->
+        expectedTargetAddress = host: '222.22.222.222', port: 80
+        satellite.store.targetAddress.set expectedTargetAddress, (res) ->
+          satellite.store.targetAddress.get (address) ->
+            assert.deepEqual address, expectedTargetAddress
+            done()
+
+    describe 'set', ->
+
+      it 'should set the current value of targetAddress, and return itself', (done) ->
+        eta = host: '333.33.333.333', port: 80
+        satellite.store.targetAddress.set eta, (newAddr) ->
+          satellite.store.targetAddress.get (addr) ->
+            assert.deepEqual addr, eta
+            assert.deepEqual newAddr, eta
+            done()
 
   describe 'targetAddressIndex', ->
 

@@ -37,10 +37,22 @@ exports.addresses =
   get: (cb) =>
     cb memory.addresses
 
-# get or set the target Address
+# get or set the target Address, sync
 exports.targetAddressSync = (setValue=undefined) =>
   memory.targetAddress = setValue if setValue?
   memory.targetAddress
+
+# get or set the target Address
+exports.targetAddress =
+  
+  # Get the current address
+  get: (cb) ->
+    cb memory.targetAddress
+
+  # Set the current address
+  set: (value, cb) ->
+    memory.targetAddress = value
+    cb value
 
 # the round robin target address index API
 exports.targetAddressIndex =
