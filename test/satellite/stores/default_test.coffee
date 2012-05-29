@@ -13,9 +13,11 @@ describe 'default store', ->
   before (done) ->
     # This is to clear out the list of addresses that
     # may have been populated by other test files
-    for address in satellite.store.addresses.getSync()
-      satellite.store.addresses.removeSync(address)
-      done() if satellite.store.addresses.getSync().length is 0 
+    satellite.store.addresses.get (addresses) ->
+      for address in addresses
+        satellite.store.addresses.remove address, (status) ->
+          satellite.store.addresses.get (addr) ->
+            done() if addr.length is 0 
 
   describe 'addresses', ->
 
