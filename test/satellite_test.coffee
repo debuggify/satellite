@@ -36,7 +36,7 @@ describe 'Satellite', ->
                 assert.deepEqual addresses, [@address]
                 done()
 
-    describe 'remove an address', ->
+    describe 'removeAddressSync', ->
 
       it 'should remove an address from an existing list', ->
         address2  = host: '192.168.0.2', port: 3000
@@ -51,3 +51,22 @@ describe 'Satellite', ->
         satellite.store.stickySessions.setSync cookie, address4
         satellite.removeAddressSync address4
         assert !satellite.store.stickySessions.getSync(cookie)?
+
+    describe 'removeAddress', ->
+
+      it 'should remove an address from an existing list', (done) ->
+        address2  = host: '192.168.0.2', port: 3000
+        satellite.addAddress address2, (status) =>
+          satellite.removeAddress @address, (status) =>
+            satellite.store.addresses.get (addresses) =>
+              assert.deepEqual addresses, [address2]
+              done()
+
+      # it 'should remove any sticky sessions that are bound to that address', ->
+      #   address4 = host: '192.168.0.4', port: 3000
+      #   cookie = "connect-sid=29ud3hd92h9d992j"
+      #   satellite.addAddressSync address4        
+      #   satellite.store.stickySessions.setSync cookie, address4
+      #   satellite.removeAddressSync address4
+      #   assert !satellite.store.stickySessions.getSync(cookie)?
+

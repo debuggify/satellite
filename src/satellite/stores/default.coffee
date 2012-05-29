@@ -23,6 +23,12 @@ exports.addresses =
     index = memory.addresses.indexOf address
     memory.addresses.splice index, 1
 
+  # add an address from the list
+  remove: (address, cb) =>
+    index = memory.addresses.indexOf address
+    memory.addresses.splice index, 1
+    cb 'success'
+
   # get the list, sync
   getSync: =>
     memory.addresses

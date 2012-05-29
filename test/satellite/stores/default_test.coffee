@@ -24,26 +24,35 @@ describe 'default store', ->
       it 'should append the address to the list', (done) ->
         address = host: '111.11.111.111', port: 80
         satellite.store.addresses.addSync address
-        assert satellite.store.addresses.getSync(), [address]
+        assert.deepEqual satellite.store.addresses.getSync(), [address]
         done()
 
     describe 'add', ->
  
       it 'should append the address to the list', (done) ->
         address = host: '111.11.111.111', port: 80
-        satellite.store.addresses.add address, (status) ->
-          satellite.store.addresses.get (addresses) ->
-            assert addresses, [address]
-            done()
-
+        # we already have an address in the collection from the previous test
+        satellite.store.addresses.get (addresses) ->
+          assert.deepEqual addresses, [address]
+          done()
 
     describe 'removeSync', ->
     
       it 'should remove the address from the list', (done) ->
         address = host: '111.11.111.111', port: 80
         satellite.store.addresses.removeSync address
-        assert satellite.store.addresses.getSync(), [address]
+        assert.deepEqual satellite.store.addresses.getSync(), []
         done()
+
+    describe 'remove', ->
+    
+      it 'should remove the address from the list', (done) ->
+        address = host: '111.11.111.111', port: 80
+        satellite.store.addresses.remove address, (status) ->
+          satellite.store.addresses.get (addresses) ->
+            assert.deepEqual addresses, []
+            done()
+
 
     describe 'getSync', ->
 
