@@ -62,11 +62,13 @@ describe 'Satellite', ->
               assert.deepEqual addresses, [address2]
               done()
 
-      # it 'should remove any sticky sessions that are bound to that address', ->
-      #   address4 = host: '192.168.0.4', port: 3000
-      #   cookie = "connect-sid=29ud3hd92h9d992j"
-      #   satellite.addAddressSync address4        
-      #   satellite.store.stickySessions.setSync cookie, address4
-      #   satellite.removeAddressSync address4
-      #   assert !satellite.store.stickySessions.getSync(cookie)?
+      it 'should remove any sticky sessions that are bound to that address', (done) ->
+        address4 = host: '192.168.0.4', port: 3000
+        cookie = "connect-sid=29ud3hd92h9d992j"
+        satellite.addAddress address4, (status) ->
+          satellite.store.stickySessions.set cookie, address4, (setCb) ->
+            satellite.removeAddress address4, (rmCb) ->
+              satellite.store.stickySessions.get cookie, (result) ->
+                assert !result?
+                done()
 

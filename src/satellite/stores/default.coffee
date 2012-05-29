@@ -60,15 +60,33 @@ exports.targetAddressIndex =
 # the sticky sessions API    
 exports.stickySessions =
   
-  # get all the sticky sessions, or just one
+  # get all the sticky sessions, or just one, sync
   getSync: (key=null) =>
     items = memory.stickySessions.sessions
     if key? then items[key] else items
   
-  # set a sticky session by its key and value
+  # get all the sticky sessions, or just one
+  get: (keyOrCb, cb=null) =>
+    items = memory.stickySessions.sessions
+    if cb is null
+      keyOrCb items
+    else
+      cb items[keyOrCb]
+
+  # set a sticky session by its key and value, sync
   setSync: (key, value) =>
     memory.stickySessions.sessions[key] = value
+
+  # set a sticky session by its key and value
+  set: (key, value, response) =>
+    memory.stickySessions.sessions[key] = value
+    response 'success'
   
-  # remove a sticky session
+  # remove a sticky session, sync
   deleteSync: (key) =>
     delete memory.stickySessions.sessions[key]
+
+  # remove a sticky session
+  delete: (key, cb) =>
+    delete memory.stickySessions.sessions[key]
+    cb 'success'

@@ -139,6 +139,23 @@ describe 'default store', ->
           assert.deepEqual satellite.store.stickySessions.getSync("cookie-xxx"), value
           done()
 
+      describe 'get', ->
+
+        it 'should return a hash of keys and values', (done) ->
+          kv = {"cookie-xxx": {host: '555.55.555.555', port: 80}}
+          for key,value of kv
+            satellite.store.stickySessions.set key, value, (res) ->
+              satellite.store.stickySessions.get (stickySessions) ->
+                assert.deepEqual stickySessions, kv
+                done()
+
+      describe 'get(key)', ->
+
+        it 'should return the value corresponding to the key in the hash', (done) ->
+          value = {host: '555.55.555.555', port: 80}
+          satellite.store.stickySessions.get "cookie-xxx", (stickySession) ->
+            assert.deepEqual stickySession, value
+            done()
 
       describe 'setSync', ->
         
@@ -148,6 +165,15 @@ describe 'default store', ->
           assert.deepEqual satellite.store.stickySessions.getSync("cookie-xxx"), value
           done()
 
+      describe 'set', ->
+
+        it 'should set a key and value in the hash', (done) ->
+          value = {host: '777.77.777.777', port: 80}
+          satellite.store.stickySessions.set "cookie-xxx", value, (status) ->
+            satellite.store.stickySessions.get "cookie-xxx", (addr) ->
+              assert.deepEqual addr, value
+              done()
+
       describe 'deleteSync', ->
 
         it 'should delete the key and value from the hash', (done) ->
@@ -156,3 +182,17 @@ describe 'default store', ->
           assert.deepEqual satellite.store.stickySessions.getSync(), {}
           assert.deepEqual satellite.store.stickySessions.getSync(key), undefined
           done()
+
+      describe 'delete', ->
+
+        it 'should delete the key and value from the hash', (done) ->
+          value = {host: '777.77.777.777', port: 80}
+          key = "cookie-xxx"
+          satellite.store.stickySessions.set key, value, (status) ->
+
+            satellite.store.stickySessions.delete key, (res) ->
+              satellite.store.stickySessions.get (data) ->
+                assert.deepEqual data, {}
+                satellite.store.stickySessions.get key, (data) ->
+                  assert.deepEqual data, undefined
+                  done()

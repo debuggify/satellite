@@ -28,10 +28,12 @@ exports.addAddress = (address, cb) =>
 # Remove an address from the list
 exports.removeAddress = (address, cb) =>
   @store.addresses.remove address, (status) =>
-    cb status
-#   for cookie, addr of @store.stickySessions.getSync()
-#     @store.stickySessions.deleteSync cookie if addr is address
-
+    @store.stickySessions.get (stickySessions) =>
+      for cookie, addr of stickySessions
+        if addr is address
+          @store.stickySessions.delete cookie, (res) ->
+            {}
+      cb status
   
 # Make middleware functions available 
 exports.roundRobinStrategy = roundRobin.strategy
