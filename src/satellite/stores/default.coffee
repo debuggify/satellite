@@ -46,28 +46,42 @@ exports.targetAddressSync = (setValue=undefined) =>
 exports.targetAddress =
   
   # Get the current address
-  get: (cb) ->
+  get: (cb) =>
     cb memory.targetAddress
 
   # Set the current address
-  set: (value, cb) ->
+  set: (value, cb) =>
     memory.targetAddress = value
     cb value
 
 # the round robin target address index API
 exports.targetAddressIndex =
   
-  # get the target address index
+  # get the target address index, sync
   getSync: =>
     memory.roundRobin.targetAddressIndex
   
-  # increase the target address index by 1
+  # get the target address index
+  get: (cb) =>
+    cb memory.roundRobin.targetAddressIndex
+
+  # increase the target address index by 1, sync
   incrementSync: =>
     memory.roundRobin.targetAddressIndex += 1
 
-  # set the target address index to 0
+  # increase the target address index by 1
+  increment: (cb) =>
+    memory.roundRobin.targetAddressIndex += 1
+    cb 'success'
+
+  # set the target address index to 0, sync
   resetSync: =>
     memory.roundRobin.targetAddressIndex = 0
+
+  # set the target address index to 0
+  reset: (cb) =>
+    memory.roundRobin.targetAddressIndex = 0
+    cb 'success'
   
 # the sticky sessions API    
 exports.stickySessions =

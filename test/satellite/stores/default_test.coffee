@@ -112,7 +112,7 @@ describe 'default store', ->
 
   describe 'targetAddressIndex', ->
 
-    describe 'get', ->
+    describe 'getSync', ->
 
       it 'should return the current index of the targetAddress array', (done) ->
         satellite.store.targetAddressIndex.resetSync()
@@ -120,7 +120,20 @@ describe 'default store', ->
         assert.equal satellite.store.targetAddressIndex.getSync(), 5
         done()
 
-    describe 'increment', ->
+    describe 'get', ->
+
+      it 'should return the current index of the targetAddress array', (done) ->
+        satellite.store.targetAddressIndex.reset (status) ->
+          satellite.store.targetAddressIndex.increment (status) ->
+            satellite.store.targetAddressIndex.increment (status) ->
+              satellite.store.targetAddressIndex.increment (status) ->
+                satellite.store.targetAddressIndex.increment (status) ->
+                  satellite.store.targetAddressIndex.increment (status) ->
+                    satellite.store.targetAddressIndex.get (number) -> 
+                      assert.equal number, 5
+                      done()
+
+    describe 'incrementSync', ->
 
       it 'should increase the value of the current index by 1', (done) ->
         satellite.store.targetAddressIndex.resetSync()
@@ -128,12 +141,30 @@ describe 'default store', ->
         assert.equal satellite.store.targetAddressIndex.getSync(), 1
         done()
 
-    describe 'reset', ->
+    describe 'increment', ->
+
+      it 'should increase the value of the current index by 1', (done) ->
+        satellite.store.targetAddressIndex.reset (status) ->
+          satellite.store.targetAddressIndex.increment (status) ->
+            satellite.store.targetAddressIndex.get (number) ->
+              assert.equal number, 1
+              done()
+
+
+    describe 'resetSync', ->
 
       it 'should set the value of the current index to 0', (done) ->
         satellite.store.targetAddressIndex.resetSync()
         assert.equal satellite.store.targetAddressIndex.getSync(), 0
         done()
+
+    describe 'reset', ->
+
+      it 'should set the value of the current index to 0', (done) ->
+        satellite.store.targetAddressIndex.reset (status) ->
+          satellite.store.targetAddressIndex.get (number) ->
+            assert.equal number, 0
+            done()
 
     describe 'stickySessions', ->
 
