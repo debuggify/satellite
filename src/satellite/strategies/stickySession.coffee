@@ -1,18 +1,24 @@
 satellite = require '../../satellite'
 
 # Sets a random address in the list as the target address
-setRandomTargetAddress = =>
-  randomIndex    = Math.floor Math.random() * satellite.store.addresses.getSync().length
-  satellite.store.targetAddressSync satellite.store.addresses.getSync()[randomIndex]
+setRandomTargetAddress = (cb=null) =>
+  satellite.store.addresses.get (addresses) ->
+    randomIndex    = Math.floor Math.random() * addresses.length
+    satellite.store.targetAddress.set addresses[randomIndex], (res) -> 
+      cb() if cb?
 
 # the connect middleware to distribute requests with sticky session ids
 # to specific addresses
 exports.strategy = (req, res, next) =>
   if req.headers.cookie?
-    if satellite.store.stickySessions.getSync(req.headers.cookie)?
-      satellite.store.targetAddressSync satellite.store.stickySessions.getSync req.headers.cookie
-    else
-      satellite.store.stickySessions.setSync req.headers.cookie, setRandomTargetAddress()
+    satellite.store.stickySessions.get req.headers.cookie, (result) ->
+      if result?
+        satellite.store.targetAddress.set result, (res) ->
+          next()
+      else
+        setRandomTargetAddress ->
+          satellite.store.targetAddress.get (address) ->
+            satellite.store.stickySessions.set req.headers.cookie, address, (status) ->
+              next()
   else
-    setRandomTargetAddress()
-  next()
+    setRandomTargetAddress -> next()
