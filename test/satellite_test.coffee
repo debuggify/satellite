@@ -46,3 +46,14 @@ describe 'Satellite', ->
                 assert !result?
                 done()
 
+    describe 'useStore', ->
+
+      after (done) ->
+        satellite.useStore 'default', {}, (status) ->
+          done()
+
+      it 'should allow the user to switch between different memory stores', (done) ->
+        redis = require 'redis'
+        redisClient = redis.createClient()
+        satellite.useStore 'redis', redisClient
+        done()

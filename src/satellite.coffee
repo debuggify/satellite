@@ -1,5 +1,8 @@
-# Basic in-process memory store and get/set API
-@store            = require './satellite/stores/default'
+# memory stores and get/set API
+redisStore        = require './satellite/stores/redis'
+defaultStore      = require './satellite/stores/default'
+
+@store = defaultStore
 
 # Load the various strategies
 roundRobin        = require './satellite/strategies/roundRobin'
@@ -24,6 +27,19 @@ exports.removeAddress = (address, cb) =>
             {}
       cb status
   
+# Change store
+exports.useStore = (storeName, options=null, cb=null) =>
+  switch storeName
+    when 'default'
+      @store = defaultStore
+      cb("Ok") if cb?
+    when 'redis'
+      @store = redisStore
+      @store.redisClient = options
+      cb("Ok") if cb?
+    else
+      cb("Error: #{storeName} not a valid store type") if cb?
+
 # Make middleware functions available 
 exports.roundRobinStrategy = roundRobin.strategy
 exports.stickySessionStrategy = stickySession.strategy

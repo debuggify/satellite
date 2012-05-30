@@ -34,8 +34,8 @@ Satellite provides a round-robin strategy that you can apply to your existing pr
     var satellite   = require('satellite');
 
     // Add 2 different servers to the proxy list
-    satellite.addAddress({host: '111.11.111.111', port: 80});
-    satellite.addAddress({host: '222.22.222.222', port: 80});
+    satellite.addAddress({host: '111.11.111.111', port: 80}, function(res){});
+    satellite.addAddress({host: '222.22.222.222', port: 80}, function(res){});
 
     var proxyServer = httpProxy.createServer(
 

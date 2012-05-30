@@ -18,7 +18,8 @@ files = [
   'satellite.coffee',
   'satellite/strategies/roundRobin.coffee',  
   'satellite/strategies/stickySession.coffee',
-  'satellite/stores/default.coffee'
+  'satellite/stores/default.coffee',
+  'satellite/stores/redis.coffee'
 ]
 
 buildDocs = (callback) ->
