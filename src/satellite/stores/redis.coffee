@@ -1,11 +1,3 @@
-memory = 
-  #addresses: []
-  #targetAddress: null
-  #roundRobin:
-  #  targetAddressIndex: 0
-  #stickySessions:
-  #  sessions: {}
-
 # The addresses store API functions
 exports.addresses =
   
