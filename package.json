@@ -14,9 +14,7 @@
     "coffee-script":"latest",
     "mocha":"= 1.0.3",
     "docco":"= 0.3.0",
-    "connect":"= 2.2.2",
-    "redis":"latest",
-    "clusterhub":"latest"
+    "connect":"= 2.2.2"
   },
   "optionalDependencies": {},
   "main": "./lib/satellite",

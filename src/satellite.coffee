@@ -1,7 +1,6 @@
 # memory stores and get/set API
 redisStore        = require './satellite/stores/redis'
 defaultStore      = require './satellite/stores/default'
-clusterHubStore   = require './satellite/stores/clusterHub'
 
 @store = defaultStore
 
@@ -37,10 +36,6 @@ exports.useStore = (storeName, options=null, cb=null) =>
     when 'redis'
       @store = redisStore
       @store.redisClient = options
-      cb("Ok") if cb?
-    when 'clusterhub'
-      @store = clusterHubStore
-      @store.client = options
       cb("Ok") if cb?
     else
       cb("Error: #{storeName} not a valid store type") if cb?
