@@ -28,14 +28,15 @@ exports.removeAddress = (address, cb) =>
       cb status
   
 # Change store
-exports.useStore = (storeName, options=null, cb=null) =>
+exports.useStore = (storeName, options={}, cb=null) =>
   switch storeName
     when 'default'
       @store = defaultStore
       cb("Ok") if cb?
     when 'redis'
       @store = redisStore
-      @store.redisClient = options
+      @store.redisClient = options.redisClient
+      @store.namespace   = options.namespace || 'satellite'
       cb("Ok") if cb?
     else
       cb("Error: #{storeName} not a valid store type") if cb?

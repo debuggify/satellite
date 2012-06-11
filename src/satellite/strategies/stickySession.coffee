@@ -9,6 +9,7 @@ setRandomTargetAddress = (cb=null) =>
 
 # the connect middleware to distribute requests with sticky session ids
 # to specific addresses
+# TODO - parse the cookie for a specific key i.e. JSESSIONID
 exports.strategy = (req, res, next) =>
   if req.headers.cookie?
     satellite.store.stickySessions.get req.headers.cookie, (result) ->

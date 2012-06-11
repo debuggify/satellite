@@ -9,9 +9,12 @@ What is it for?
 Satellite uses Nodejitsu's [node-http-proxy](https://github.com/nodejitsu/node-http-proxy) to help with:
 
 - Load-balancing requests across multiple servers via a round-robin strategy.
-- Running the proxy server over multiple CPU cores using Node.js' cluster API.
-- Being able to add or remove servers from the proxy list on-the-fly.
 - Supporting sticky sessions by routing requests to specific servers.
+
+And in the future...
+
+- Being able to add or remove servers from the proxy list on-the-fly.
+- Running the proxy server over multiple CPU cores using Node.js' cluster API.
 
 Installation
 ---
@@ -48,7 +51,10 @@ Satellite provides a round-robin strategy that you can apply to your existing pr
         // tell proxyRequest to use the target address
         // determined by satellite, which will be one
         // of the 2 servers.
-        proxy.proxyRequest(req, res, satellite.targetAddress);
+        satellite.store.targetAddress.get( function(targetAddress) {
+          proxy.proxyRequest(req, res, targetAddress);
+        });
+        
       }
     ).listen(80);
 ```
@@ -81,7 +87,9 @@ To enable sticky session support in your proxy server, you can do this:
       satellite.stickySessionStrategy,
 
       function (req,res, proxy){
-        proxy.proxyRequest(req, res, satellite.targetAddress);
+        satellite.store.targetAddress.get( function(targetAddress) {
+          proxy.proxyRequest(req, res, targetAddress);
+        });
       }
     ).listen(80);
 ```
@@ -96,9 +104,21 @@ after you have called the round-robin middleware, like this:
       satellite.stickySessionStrategy,
 ```
 
+Redis store
+---
+
+At the moment, there is a Redis store option in active development (in order to support use of Node.js's cluster API with satellite). There is a hanging request issue which I am yet to resolve, so I will keep working at this until it is fixed.
+
 Dependencies
 ---
 
 Satellite was built against Node.js v0.6.17, and has it's engine set against that version.
 
 It may be able to run on previous versions of Node.js, but you'll need to git clone a copy and modify the package.json to do so.
+
+Because there is also a Redis store in development, Redis is an optional dependency.
+
+License
+---
+
+MIT

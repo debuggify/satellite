@@ -55,5 +55,6 @@ describe 'Satellite', ->
       it 'should allow the user to switch between different memory stores', (done) ->
         redis = require 'redis'
         redisClient = redis.createClient()
-        satellite.useStore 'redis', redisClient
+        namespace   = 'satellite_test'
+        satellite.useStore 'redis', {redisClient, namespace}
         done()

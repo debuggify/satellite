@@ -2,7 +2,7 @@
   "author": "Paul Jensen <paulbjensen@gmail.com>",
   "name": "satellite",
   "description": "Extensions for node-http-proxy",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "repository": {
     "type": "git",
     "url": "http://github.com/paulbjensen/satellite.git"
@@ -16,7 +16,9 @@
     "docco":"= 0.3.0",
     "connect":"= 2.2.2"
   },
-  "optionalDependencies": {},
+  "optionalDependencies": {
+    "redis":"latest"
+  },
   "main": "./lib/satellite",
   "engines": {
     "node": ">= 0.6.17"

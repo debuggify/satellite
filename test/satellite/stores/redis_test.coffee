@@ -13,7 +13,8 @@ describe 'redis store', ->
   before (done) ->
     redis = require 'redis'
     redisClient = redis.createClient()
-    satellite.useStore 'redis', redisClient, (status) ->
+    namespace   = 'satellite_test'
+    satellite.useStore 'redis', {redisClient, namespace}, (status) ->
       # This is to clear out the list of addresses that
       # may have been populated by other test files
       satellite.store.addresses.get (addresses) ->
